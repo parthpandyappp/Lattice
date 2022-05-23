@@ -1,2 +1,6 @@
 export * from "./Footer"
 export * from "./Nav"
+export * from "./PostCard"
+export * from "./ProfileHeader"
+export * from "./WhoToFollow"
+export * from "./NewPost"
