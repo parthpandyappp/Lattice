@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom";
+import { BsBookmark } from "react-icons/bs";
+import { MdOutlineExplore } from "react-icons/md";
+import { GrNotification } from "react-icons/gr";
+import { BiUser } from "react-icons/bi";
 
 const Nav = () => {
   return (
@@ -6,29 +10,23 @@ const Nav = () => {
       <Link to="/">
         <h1 className="text-xl cursor-pointer font-bold">❆Lattice</h1>
       </Link>
-      <div className="flex mr-4 gap-4 invisible md:visible">
-        <img
-          className="cursor-pointer"
-          src="https://img.icons8.com/ios/30/000000/compass--v1.png"
-          alt="nav-icons"
-        />
-        <img
-          className="cursor-pointer"
-          src="https://img.icons8.com/material-outlined/30/000000/bookmark-ribbon--v1.png"
-          alt="nav-icons"
-        />
-        <img
-          className="cursor-pointer"
-          src="https://img.icons8.com/ios/30/000000/appointment-reminders--v1.png"
-          alt="nav-icons"
-        />
-        <Link to="/profile">
-          <img
-            className="cursor-pointer"
-            src="https://img.icons8.com/wired/30/000000/circled-user.png"
-            alt="nav-icons"
-          />
+      <div className="flex items-center mr-4 gap-4 invisible md:visible">
+        <Link to="/explore">
+          <MdOutlineExplore className="text-2xl cursor-pointer" />
         </Link>
+
+        <Link to="/bookmarks">
+          <BsBookmark className="text-xl cursor-pointer" />
+        </Link>
+
+        <Link to="/notifications">
+          <GrNotification className="text-xl cursor-pointer" />
+        </Link>
+
+        <Link to="/profile">
+          <BiUser className="text-2xl cursor-pointer" />
+        </Link>
+
         <Link to="/login">
           <button className="bg-amber-200 px-4 py-1">Login</button>
         </Link>

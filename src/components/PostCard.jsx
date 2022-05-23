@@ -1,3 +1,6 @@
+import { IoIosArrowUp } from "react-icons/io";
+import { BiComment } from "react-icons/bi";
+import { BsBookmark } from "react-icons/bs";
 const PostCard = () => {
   return (
     <div className="grid grid-cols-8 w-full shadow p-3 rounded mb-3">
@@ -17,22 +20,10 @@ const PostCard = () => {
           vero fugit culpa et explicabo rem libero, minima sapiente. Officia,
           odit numquam.
         </p>
-        <div className="flex gap-3 mt-3">
-          <img
-            className="cursor-pointer"
-            src="https://img.icons8.com/external-those-icons-lineal-those-icons/30/000000/external-up-arrows-those-icons-lineal-those-icons.png"
-            alt="util-icons"
-          />
-          <img
-            className="cursor-pointer"
-            src="https://img.icons8.com/ios/30/000000/topic.png"
-            alt="util-icons"
-          />
-          <img
-            className="cursor-pointer"
-            src="https://img.icons8.com/external-phatplus-lineal-phatplus/30/000000/external-bookmarks-essential-phatplus-lineal-phatplus.png"
-            alt="util-icons"
-          />
+        <div className="flex items-center gap-3 mt-3">
+          <IoIosArrowUp className="cursor-pointer text-3xl text-green-500" />
+          <BiComment className="cursor-pointer text-2xl" />
+          <BsBookmark className="text-xl cursor-pointer" />
         </div>
       </div>
     </div>

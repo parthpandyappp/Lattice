@@ -7,7 +7,7 @@ const NotFound = () => {
       <p className="flex text-xl mt-3">
         You're lost, pack your bag & Go
         <Link to="/">
-          <span class="underline underline-offset-4"> Home</span>
+          <span className="underline underline-offset-4"> Home</span>
         </Link>
       </p>
     </main>
