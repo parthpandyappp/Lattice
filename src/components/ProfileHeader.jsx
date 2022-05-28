@@ -1,4 +1,4 @@
-const ProfileHeader = () => {
+const ProfileHeader = ({ user }) => {
   return (
     <div className="w-full md:shadow mb-12">
       <div className="flex flex-col items-center justify-center">
@@ -8,8 +8,8 @@ const ProfileHeader = () => {
           alt="profile"
         />
         <div className="text-center">
-          <p className="text-sm">@jamestwitch</p>
-          <p className="text-medium font-semibold">James Twitch</p>
+          <p className="text-sm">@{user.username}</p>
+          <p className="text-medium font-semibold">{user.firstName}</p>
           <p className="mt-3 text-base">
             Ex-Microsoft | Ex-Twitter, Loves to read & sing.
           </p>
@@ -19,11 +19,11 @@ const ProfileHeader = () => {
               <p className="font-semibold">Post</p>
             </div>
             <div className="flex flex-col">
-              <p>6M</p>
+              <p>{user.followers.length}</p>
               <p className="font-semibold">Followers</p>
             </div>
             <div className="flex flex-col">
-              <p>0</p>
+              <p>{user.following.length}</p>
               <p className="font-semibold">Following</p>
             </div>
           </div>
