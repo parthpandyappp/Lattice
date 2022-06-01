@@ -7,7 +7,7 @@ const Endpoints = () => {
       <Route path="/" element={<Home />} />
       <Route path="/explore" element={<Explore />} />
       <Route path="/bookmarks" element={<BookMarks />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile/:username" element={<Profile />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />

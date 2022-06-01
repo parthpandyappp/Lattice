@@ -19,6 +19,7 @@ export const users = [
     _id: uuid(),
     firstName: "Testman",
     lastName: "Saheb",
+    bio: "Ex-Microsoft | Ex-Twitter, Loves to read & sing.",
     username: "testcool",
     password: "test123",
     createdAt: formatDate(),

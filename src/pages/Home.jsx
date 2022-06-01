@@ -1,7 +1,43 @@
+import axios from "axios";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import landing from "../assets/landing.png";
+import { getAllUsers } from "../features/usersSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Home = () => {
+  const { users } = useSelector((state) => state.users);
+  const { authToken } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const reSignUp = async () => {
+    try {
+      const { username, password, firstName } = JSON.parse(
+        localStorage.getItem("lattice-user")
+      );
+      const res = await axios({
+        method: "POST",
+        url: "/api/auth/signup",
+        data: {
+          username: username,
+          password: password,
+          firstName: firstName,
+          avatar: "",
+          bio: "",
+        },
+      });
+      dispatch(getAllUsers({ authToken }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("lattice-user") &&  users.length ===2) {
+      reSignUp();
+    }
+  }, []);
+
   return (
     <main className="flex flex-col md:flex-row justify-center items-center w-full min-h-screen">
       <div className="flex justify-center w-1/2">

@@ -1,5 +1,5 @@
 import { BiUser } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BsBookmark } from "react-icons/bs";
 import { GrNotification } from "react-icons/gr";
 import { MdOutlineExplore } from "react-icons/md";
@@ -7,7 +7,7 @@ import { userLogout } from "../features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Nav = () => {
-  const { isAuth } = useSelector((state) => state.auth);
+  const { authUser, isAuth } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const Nav = () => {
       <Link to="/">
         <h1 className="text-xl cursor-pointer font-bold">❆Lattice</h1>
       </Link>
-      <div className="flex items-center mr-4 gap-4 invisible md:visible">
+      <div className="flex items-center mr-4 gap-4">
         <Link to="/explore">
           <MdOutlineExplore className="text-2xl cursor-pointer" />
         </Link>
@@ -33,7 +33,7 @@ const Nav = () => {
           <GrNotification className="text-xl cursor-pointer" />
         </Link>
 
-        <Link to="/profile">
+        <Link to={authUser ? `/profile/${authUser.username}` : `/login`}>
           <BiUser className="text-2xl cursor-pointer" />
         </Link>
 

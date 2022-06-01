@@ -4,12 +4,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isAuth: localStorage.getItem("lattice-token") === null ? false : true,
     authToken: localStorage.getItem("lattice-token") ?? null,
-    user: JSON.parse(localStorage.getItem("lattice-user") ?? null),
+    authUser: JSON.parse(localStorage.getItem("lattice-user")) ?? null
 }
 
 export const userLogin = createAsyncThunk('authentication/userLogin', async ({ username, password }) => {
     try {
-        console.log("LOG ARGS: ", username, password)
         const res = await axios({
             method: "POST",
             url: "/api/auth/login",
@@ -17,6 +16,8 @@ export const userLogin = createAsyncThunk('authentication/userLogin', async ({ u
                 username, password
             }
         })
+        localStorage.setItem("lattice-token", res.data.encodedToken);
+        localStorage.setItem("lattice-user", JSON.stringify(res.data.foundUser));
         return res.data
     } catch (error) {
         console.error(error)
@@ -31,6 +32,8 @@ export const userSignup = createAsyncThunk('authentication/userSignup', async ({
                 username: username,
                 password: password,
                 firstName: firstName,
+                avatar: "",
+                bio: "",
             }
         })
         localStorage.setItem("lattice-token", res.data.encodedToken);
@@ -50,22 +53,29 @@ const authSlice = createSlice({
             localStorage.removeItem("lattice-token");
             localStorage.removeItem("lattice-user");
             state.isAuth = false;
-            state.user = null;
+            state.authUser = null; 
             state.authToken = null;
-        }
+        },
+        editProfile: (state, action) => {
+            state.authUser.username = action.payload.username;
+            state.authUser.firstName = action.payload.firstName;
+            state.authUser.bio = action.payload.bio;
+            const user = JSON.parse(localStorage.getItem("lattice-user"))
+            localStorage.setItem("lattice-user", JSON.stringify({ ...user, username: action.payload.username, firstName: action.payload.firstName, bio: action.payload.bio }))
+        },
     },
     extraReducers: {
         [userSignup.fulfilled]: (state, action) => {
             state.isAuth = true;
             state.authToken = action.payload.encodedToken;
-            state.user = action.payload.createdUser;
+            state.authUser = action.payload.createdUser;
         },
         [userLogin.fulfilled]: (state, action) => {
             state.isAuth = true;
             state.authToken = action.payload.encodedToken;
-            state.user = action.payload.foundUser;
+            state.authUser = action.payload.foundUser;
         }
     }
 })
-export const { userLogout } = authSlice.actions;
+export const { userLogout, editProfile } = authSlice.actions;
 export default authSlice.reducer
