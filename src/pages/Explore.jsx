@@ -1,5 +1,4 @@
 import { NewPost, PostCard, WhoToFollow } from "../components";
-import { useSelector } from "react-redux";
 
 const Explore = () => {
   return (
