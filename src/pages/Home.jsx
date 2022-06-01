@@ -15,7 +15,7 @@ const Home = () => {
       const { username, password, firstName } = JSON.parse(
         localStorage.getItem("lattice-user")
       );
-      const res = await axios({
+      await axios({
         method: "POST",
         url: "/api/auth/signup",
         data: {
@@ -33,9 +33,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("lattice-user") &&  users.length ===2) {
+    if (localStorage.getItem("lattice-user") && users.length === 2) {
       reSignUp();
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

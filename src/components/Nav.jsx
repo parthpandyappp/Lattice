@@ -1,9 +1,9 @@
 import { BiUser } from "react-icons/bi";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { BsBookmark } from "react-icons/bs";
 import { GrNotification } from "react-icons/gr";
 import { MdOutlineExplore } from "react-icons/md";
 import { userLogout } from "../features/authSlice";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const Nav = () => {
