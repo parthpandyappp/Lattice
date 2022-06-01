@@ -7,7 +7,7 @@ const initialState = {
     authUser: JSON.parse(localStorage.getItem("lattice-user")) ?? null
 }
 
-export const userLogin = createAsyncThunk('authentication/userLogin', async ({ username, password }) => {
+export const userLogin = createAsyncThunk('authentication/userLogin', async ({ username, password }, thunkAPI) => {
     try {
         const res = await axios({
             method: "POST",
@@ -20,7 +20,7 @@ export const userLogin = createAsyncThunk('authentication/userLogin', async ({ u
         localStorage.setItem("lattice-user", JSON.stringify(res.data.foundUser));
         return res.data
     } catch (error) {
-        console.error(error)
+        return thunkAPI.rejectWithValue("username or password is incorrect")
     }
 })
 export const userSignup = createAsyncThunk('authentication/userSignup', async ({ username, password, firstName }) => {
