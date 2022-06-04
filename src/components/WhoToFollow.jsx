@@ -28,14 +28,13 @@ const WhoToFollow = () => {
           {people &&
             people.map((user) => {
               return (
-                <Link to={`/profile/${user.username}`}>
+                <Link key={user._id} to={`/profile/${user.username}`}>
                   <p
-                    key={user._id}
                     className="flex gap-1 text-sm items-center font-medium"
                   >
                     <img
-                      src="https://picsum.photos/35"
-                      className="rounded-full"
+                      src={user.avatar}
+                      className="rounded-full w-12"
                       alt="user-profile"
                     />
                     @{user.username}
