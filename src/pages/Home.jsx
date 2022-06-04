@@ -33,7 +33,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("lattice-user") && users.length === 2) {
+    dispatch(getAllUsers({ authToken }));
+
+    if (localStorage.getItem("lattice-user") && users.length === 7) {
       reSignUp();
     }
     // eslint-disable-next-line
