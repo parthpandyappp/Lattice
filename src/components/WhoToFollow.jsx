@@ -9,7 +9,7 @@ const WhoToFollow = () => {
   const dispatch = useDispatch();
 
   const people = users
-    .filter((user) => user.username != authUser.username)
+    .filter((user) => user.username !== authUser.username)
     .sort(() => 0.5 - Math.random())
     .slice(0, 3);
 
