@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 const Home = () => {
   const { users } = useSelector((state) => state.users);
-  const { authToken } = useSelector((state) => state.auth);
+  const { authToken, authUserLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const reSignUp = async () => {
@@ -33,9 +33,13 @@ const Home = () => {
   };
 
   useEffect(() => {
-    dispatch(getAllUsers({ authToken }));
+    authUserLoading && dispatch(getAllUsers({ authToken }));
 
-    if (localStorage.getItem("lattice-user") && users.length === 7) {
+    if (
+      authUserLoading &&
+      localStorage.getItem("lattice-user") &&
+      users.length === 7
+    ) {
       reSignUp();
     }
     // eslint-disable-next-line

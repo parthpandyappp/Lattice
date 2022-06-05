@@ -4,8 +4,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isAuth: localStorage.getItem("lattice-token") === null ? false : true,
     authToken: localStorage.getItem("lattice-token") ?? null,
-    authUser: JSON.parse(localStorage.getItem("lattice-user")) ?? null
+    authUser: JSON.parse(localStorage.getItem("lattice-user")) ?? null,
+    authUserLoading: JSON.parse(localStorage.getItem("authUserLoading")) ?? false,
 }
+
 
 export const userLogin = createAsyncThunk('authentication/userLogin', async ({ username, password }, thunkAPI) => {
     try {
@@ -18,6 +20,8 @@ export const userLogin = createAsyncThunk('authentication/userLogin', async ({ u
         })
         localStorage.setItem("lattice-token", res.data.encodedToken);
         localStorage.setItem("lattice-user", JSON.stringify(res.data.foundUser));
+        localStorage.setItem("authUserLoading", true)
+
         return res.data
     } catch (error) {
         return thunkAPI.rejectWithValue("username or password is incorrect")
@@ -38,6 +42,7 @@ export const userSignup = createAsyncThunk('authentication/userSignup', async ({
         })
         localStorage.setItem("lattice-token", res.data.encodedToken);
         localStorage.setItem("lattice-user", JSON.stringify(res.data.createdUser));
+        localStorage.setItem("authUserLoading", true)
         return res.data;
     } catch (error) {
         console.error(error)
@@ -52,9 +57,11 @@ const authSlice = createSlice({
         userLogout: (state) => {
             localStorage.removeItem("lattice-token");
             localStorage.removeItem("lattice-user");
+            localStorage.removeItem("authUserLoading");
             state.isAuth = false;
-            state.authUser = null; 
+            state.authUser = null;
             state.authToken = null;
+            state.authUserLoading = false;
         },
         editProfile: (state, action) => {
             state.authUser.username = action.payload.username;
@@ -65,15 +72,24 @@ const authSlice = createSlice({
         },
     },
     extraReducers: {
+        [userSignup.pending]: (state) => {
+            state.authUserLoading = false;
+        },
+        [userLogin.pending]: (state) => {
+            state.authUserLoading = false;
+        },
         [userSignup.fulfilled]: (state, action) => {
             state.isAuth = true;
             state.authToken = action.payload.encodedToken;
             state.authUser = action.payload.createdUser;
+            state.authUserLoading = true;
         },
         [userLogin.fulfilled]: (state, action) => {
             state.isAuth = true;
             state.authToken = action.payload.encodedToken;
             state.authUser = action.payload.foundUser;
+            state.authUserLoading = true;
+
         }
     }
 })

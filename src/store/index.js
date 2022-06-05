@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import modalFormReducer from "../features/modalSlice";
 import userProfileReducer from "../features/userProfileSlice";
 import usersReducer from "../features/usersSlice";
+import postsReducer from "../features/postsSlice";
 
 
 
@@ -12,6 +13,7 @@ const store = configureStore({
         modal: modalFormReducer,
         userProfile: userProfileReducer,
         users: usersReducer,
+        posts: postsReducer,
     }
 })
 
