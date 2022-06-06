@@ -64,6 +64,7 @@ export const getAllUserPostsHandler = function (schema, request) {
  * */
 
 export const createPostHandler = function (schema, request) {
+
   const user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -80,7 +81,7 @@ export const createPostHandler = function (schema, request) {
     const { postData } = JSON.parse(request.requestBody);
     const post = {
       _id: uuid(),
-      ...postData,
+      content: postData,
       likes: {
         likeCount: 0,
         likedBy: [],

@@ -44,7 +44,7 @@ export const users = [
     firstName: "Khushal",
     lastName: "Sharma",
     bio: "Another GitHub user with extra capabilities.",
-    avatar: "https://randomuser.me/api/portraits/men/55.jpg",
+    avatar: "https://randomuser.me/api/portraits/men/68.jpg",
     username: "logan1x",
     password: "khush123",
     createdAt: formatDate(),

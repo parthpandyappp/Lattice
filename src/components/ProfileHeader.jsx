@@ -5,13 +5,13 @@ import { ProfileUpdateModal } from "./ProfileUpdateModal";
 const ProfileHeader = ({ user }) => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.modal.modalVisible);
-  const {authUser} = useSelector(state=>state.auth);
+  const { authUser } = useSelector((state) => state.auth);
   return (
     <div className="w-full md:shadow mb-12">
       <ProfileUpdateModal show={show} user={user} />
       <div className="flex flex-col items-center justify-center">
         <img
-          src="https://picsum.photos/100"
+          src={user.avatar ? user.avatar : `https://picsum.photos/100`}
           className="border-4 border-amber-100 rounded-full"
           alt="profile"
         />
@@ -33,17 +33,17 @@ const ProfileHeader = ({ user }) => {
               <p className="font-semibold">Following</p>
             </div>
           </div>
-          {authUser.username===user.username ? <button
-            className="text-center font-light w-full py-1 bg-amber-100 rounded-lg my-2"
-            onClick={() => dispatch(toggleModal())}
-          >
-            Update Profile
-          </button> : (
-          <button
-          className="text-center font-light w-full py-1 bg-amber-100 rounded-lg my-2"
-        >
-          Follow
-        </button>
+          {authUser.username === user.username ? (
+            <button
+              className="text-center font-light w-full py-1 bg-amber-100 rounded-lg my-2"
+              onClick={() => dispatch(toggleModal())}
+            >
+              Update Profile
+            </button>
+          ) : (
+            <button className="text-center font-light w-full py-1 bg-amber-100 rounded-lg my-2">
+              Follow
+            </button>
           )}
         </div>
       </div>

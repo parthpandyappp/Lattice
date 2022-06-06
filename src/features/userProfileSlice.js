@@ -28,7 +28,7 @@ const userProfileSlice = createSlice({
     name: "userProfile",
     initialState,
     reducers: {
-        profileUpdate : (state, action) => {
+        profileUpdate: (state, action) => {
             state.userProfile.username = action.payload.username;
             state.userProfile.firstName = action.payload.firstName;
             state.userProfile.bio = action.payload.bio;
@@ -46,7 +46,7 @@ const userProfileSlice = createSlice({
 
 })
 
-export const {profileUpdate} = userProfileSlice.actions; 
+export const { profileUpdate } = userProfileSlice.actions;
 
 
 export default userProfileSlice.reducer;
