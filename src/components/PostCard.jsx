@@ -12,7 +12,7 @@ const PostCard = () => {
       <div className="col-start-2 col-span-8 p-1">
         <p className="font-bold text-sm md:text-base">James Twitch</p>
         <p className="text-xs md:text-sm">
-          Ex-Microsoft | Ex-Twitter, Loves to read & sing.
+          Ex-Microsoft | Ex-Twitter, Loves to read & sing
         </p>
         <p className="mt-2 text-sm md:text-base">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
