@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NewPost, PostCard, WhoToFollow } from "../components";
 import { getAllUsers } from "../features/usersSlice";
+import { getPosts } from "../features/postsSlice";
 import { BiLoader } from "react-icons/bi";
 
 const Explore = () => {
@@ -11,6 +12,7 @@ const Explore = () => {
 
   useEffect(() => {
     authToken !== null && dispatch(getAllUsers({ authToken }));
+    dispatch(getPosts());
     // eslint-disable-next-line
   }, [authUserLoading]);
 
