@@ -125,7 +125,9 @@ export const editPostHandler = function (schema, request) {
     }
     const postId = request.params.postId;
     const { postData } = JSON.parse(request.requestBody);
+    // console.log("Post Data: ", postData)
     let post = schema.posts.findBy({ _id: postId }).attrs;
+    // console.log("Post: ", post)
     if (post.username !== user.username) {
       return new Response(
         400,
@@ -135,7 +137,9 @@ export const editPostHandler = function (schema, request) {
         }
       );
     }
-    post = { ...post, ...postData };
+    post = { ...post, content:postData };
+
+    // console.log("from controlers:",post)
     this.db.posts.update({ _id: postId }, post);
     return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {

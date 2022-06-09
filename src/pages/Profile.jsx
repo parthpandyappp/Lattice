@@ -30,10 +30,11 @@ const Profile = () => {
     <div className="relative">
       <main className="flex flex-col md:flex-row md:space-x-4 my-2 w-5/6 mx-auto items-center justify-center md:items-start min-h-screen">
         <div className="col-span-2 flex flex-col w-3/4 justify-center items-center">
-          <ProfileHeader user={userProfile} />
+          <ProfileHeader />
           {postsLoading &&
-            filteredPosts &&
-            filteredPosts.map((post) => <PostCard data={post} />)}
+            filteredPosts.map((post) => (
+              <PostCard key={post._id} data={post} from="profile" />
+            ))}
 
           {filteredPosts.length === 0 && (
             <div className="flex flex-col items-center justify-center">

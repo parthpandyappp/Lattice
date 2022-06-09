@@ -38,6 +38,39 @@ export const createPost = createAsyncThunk("posts/createPost", async ({ authToke
     }
 })
 
+export const editPost = createAsyncThunk("posts/editPost", async ({ authToken, postId, post }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/posts/edit/${postId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+            data: {
+                postData: post,
+            }
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+export const deletePost = createAsyncThunk("posts/editPost", async ({ authToken, postId, post }) => {
+    try {
+        const res = await axios({
+            method: "DELETE",
+            url: `/api/posts/${postId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 
 const postsSlice = createSlice({
     name: "posts",
@@ -54,7 +87,22 @@ const postsSlice = createSlice({
         [createPost.fulfilled]: (state, action) => {
             state.posts = action.payload.posts;
             state.postsLoading = true;
-        }
+        },
+        [editPost.pending]: (state) => {
+            state.postsLoading = false;
+        },
+        [editPost.fulfilled]: (state, action) => {
+            state.posts = action.payload.posts;
+            state.postsLoading = true;
+        },
+        [deletePost.pending]: (state) => {
+            state.postsLoading = false;
+        },
+        [deletePost.fulfilled]: (state, action) => {
+            state.posts = action.payload.posts;
+            state.postsLoading = true;
+        },
+
     }
 })
 
