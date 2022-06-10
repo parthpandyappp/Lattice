@@ -4,6 +4,7 @@ import modalFormReducer from "../features/modalSlice";
 import userProfileReducer from "../features/userProfileSlice";
 import usersReducer from "../features/usersSlice";
 import postsReducer from "../features/postsSlice";
+import bookMarksReducer from "../features/bookMarksSlice";
 
 
 
@@ -14,6 +15,7 @@ const store = configureStore({
         userProfile: userProfileReducer,
         users: usersReducer,
         posts: postsReducer,
+        bookMarks: bookMarksReducer
     }
 })
 

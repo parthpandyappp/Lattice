@@ -1,6 +1,6 @@
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BiComment } from "react-icons/bi";
-import { BsBookmark } from "react-icons/bs";
+import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllUsers } from "../features/usersSlice";
@@ -9,12 +9,18 @@ import { toggleModal } from "../features/modalSlice";
 import { PrimeModal } from "./PrimeModal";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { likePost, dislikePost } from "../features/postsSlice";
+import {
+  addToBookmarks,
+  getBookMarks,
+  removeFromBookmarks,
+} from "../features/bookMarksSlice";
 
 const PostCard = ({ data, from }) => {
   const dispatch = useDispatch();
   const { authUser, authToken } = useSelector((state) => state.auth);
   const { postsLoading } = useSelector((state) => state.posts);
   const { users, usersLoading } = useSelector((state) => state.users);
+  const { bookMarks } = useSelector((state) => state.bookMarks);
 
   const user = users.filter((user) => user.username === data.username);
   const isLiked =
@@ -25,8 +31,11 @@ const PostCard = ({ data, from }) => {
     authUser &&
     data.likes.dislikedBy.some((user) => authUser.username === user.username);
 
+  const isBookMarked = bookMarks.some((bookmark) => bookmark._id === data._id);
+
   useEffect(() => {
     dispatch(getAllUsers({ authToken }));
+    dispatch(getBookMarks({ authToken }));
   }, [dispatch, data.username, authToken]);
 
   return (
@@ -124,7 +133,21 @@ const PostCard = ({ data, from }) => {
               </div>
             )}
             <BiComment className="cursor-pointer text-2xl" />
-            <BsBookmark className="text-xl cursor-pointer" />
+            {isBookMarked ? (
+              <BsFillBookmarkFill
+                className="text-xl cursor-pointer"
+                onClick={() =>
+                  dispatch(removeFromBookmarks({ authToken, postId: data._id }))
+                }
+              />
+            ) : (
+              <BsBookmark
+                className="text-xl cursor-pointer"
+                onClick={() =>
+                  dispatch(addToBookmarks({ authToken, postId: data._id }))
+                }
+              />
+            )}
           </div>
         </div>
       </div>
