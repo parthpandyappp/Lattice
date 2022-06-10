@@ -1,4 +1,4 @@
-import { IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { BiComment } from "react-icons/bi";
 import { BsBookmark } from "react-icons/bs";
 import { useEffect } from "react";
@@ -8,14 +8,22 @@ import { Link } from "react-router-dom";
 import { toggleModal } from "../features/modalSlice";
 import { PrimeModal } from "./PrimeModal";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { likePost, dislikePost } from "../features/postsSlice";
 
 const PostCard = ({ data, from }) => {
   const dispatch = useDispatch();
-  const { authToken } = useSelector((state) => state.auth);
+  const { authUser, authToken } = useSelector((state) => state.auth);
   const { postsLoading } = useSelector((state) => state.posts);
   const { users, usersLoading } = useSelector((state) => state.users);
 
   const user = users.filter((user) => user.username === data.username);
+  const isLiked =
+    authUser &&
+    data.likes.likedBy.some((user) => authUser.username === user.username);
+
+  const isDisliked =
+    authUser &&
+    data.likes.dislikedBy.some((user) => authUser.username === user.username);
 
   useEffect(() => {
     dispatch(getAllUsers({ authToken }));
@@ -63,7 +71,58 @@ const PostCard = ({ data, from }) => {
           <p className="text-xs md:text-sm">{user[0].bio}</p>
           <p className="mt-2 text-sm md:text-base">{data.content}</p>
           <div className="flex items-center gap-3 mt-3">
-            <IoIosArrowUp className="cursor-pointer text-3xl text-green-500" />
+            {!isLiked && !isDisliked && (
+              <div className="flex gap-1 items-center">
+                <p className="text-normal text-gray">{data.likes.likeCount}</p>
+                <IoIosArrowUp
+                  className="cursor-pointer text-3xl text-gray-500"
+                  onClick={() =>
+                    dispatch(likePost({ authToken, postId: data._id }))
+                  }
+                />
+                <p className="text-normal text-gray">
+                  {data.likes.dislikedBy.length}
+                </p>
+                <IoIosArrowDown
+                  className="cursor-pointer text-3xl text-gray-500"
+                  onClick={() =>
+                    dispatch(dislikePost({ authToken, postId: data._id }))
+                  }
+                />
+              </div>
+            )}
+            {isLiked && (
+              <div className="flex gap-1  items-center">
+                <p className="text-normal text-green-300 ">
+                  {data.likes.likeCount}
+                </p>
+                <IoIosArrowUp className="cursor-pointer text-3xl text-green-500" />
+                <p className="text-normal text-gray">
+                  {data.likes.dislikedBy.length}
+                </p>
+                <IoIosArrowDown
+                  className="cursor-pointer text-3xl text-gray-500"
+                  onClick={() =>
+                    dispatch(dislikePost({ authToken, postId: data._id }))
+                  }
+                />
+              </div>
+            )}
+            {isDisliked && (
+              <div className="flex gap-1  items-center">
+                <p className="text-normal text-gray">{data.likes.likeCount}</p>
+                <IoIosArrowUp
+                  className="cursor-pointer text-3xl text-gray-500"
+                  onClick={() =>
+                    dispatch(likePost({ authToken, postId: data._id }))
+                  }
+                />
+                <p className="text-lg text-red-400">
+                  {data.likes.dislikedBy.length}
+                </p>
+                <IoIosArrowDown className="cursor-pointer text-3xl text-red-500" />
+              </div>
+            )}
             <BiComment className="cursor-pointer text-2xl" />
             <BsBookmark className="text-xl cursor-pointer" />
           </div>

@@ -71,6 +71,36 @@ export const deletePost = createAsyncThunk("posts/editPost", async ({ authToken,
     }
 })
 
+export const likePost = createAsyncThunk("posts/likePost", async ({ authToken, postId }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/posts/like/${postId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+export const dislikePost = createAsyncThunk("posts/dislikePost", async ({ authToken, postId }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/posts/dislike/${postId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 
 const postsSlice = createSlice({
     name: "posts",
@@ -99,6 +129,20 @@ const postsSlice = createSlice({
             state.postsLoading = false;
         },
         [deletePost.fulfilled]: (state, action) => {
+            state.posts = action.payload.posts;
+            state.postsLoading = true;
+        },
+        [likePost.pending]: (state) => {
+            state.postsLoading = false;
+        },
+        [likePost.fulfilled]: (state, action) => {
+            state.posts = action.payload.posts;
+            state.postsLoading = true;
+        },
+        [dislikePost.pending]: (state) => {
+            state.postsLoading = false;
+        },
+        [dislikePost.fulfilled]: (state, action) => {
             state.posts = action.payload.posts;
             state.postsLoading = true;
         },
