@@ -11,6 +11,7 @@ const BookMarks = () => {
 
   useEffect(() => {
     dispatch(getBookMarks({ authToken }));
+    // eslint-disable-next-line
   }, []);
 
   return BookMarks.length ? (
