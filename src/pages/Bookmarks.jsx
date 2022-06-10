@@ -14,7 +14,7 @@ const BookMarks = () => {
     // eslint-disable-next-line
   }, []);
 
-  return BookMarks.length ? (
+  return bookMarks.length ? (
     <main className="min-h-screen flex flex-col items-center justify-center">
       <h1 className="text-4xl">BookMarks</h1>
       <div className="flex flex-col w-3/4 justify-center">
