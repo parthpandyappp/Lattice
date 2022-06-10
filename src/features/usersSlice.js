@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     users: [],
+    usersLoading: false,
 }
 
 
@@ -26,8 +27,12 @@ const usersSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
+        [getAllUsers.pending] : (state) => {
+            state.usersLoading = false;
+        },
         [getAllUsers.fulfilled]: (state, action) => {
             state.users = action.payload.users;
+            state.usersLoading = true;
         },
     }
 

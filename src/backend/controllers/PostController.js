@@ -64,6 +64,7 @@ export const getAllUserPostsHandler = function (schema, request) {
  * */
 
 export const createPostHandler = function (schema, request) {
+
   const user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -80,7 +81,7 @@ export const createPostHandler = function (schema, request) {
     const { postData } = JSON.parse(request.requestBody);
     const post = {
       _id: uuid(),
-      ...postData,
+      content: postData,
       likes: {
         likeCount: 0,
         likedBy: [],
@@ -124,7 +125,9 @@ export const editPostHandler = function (schema, request) {
     }
     const postId = request.params.postId;
     const { postData } = JSON.parse(request.requestBody);
+    // console.log("Post Data: ", postData)
     let post = schema.posts.findBy({ _id: postId }).attrs;
+    // console.log("Post: ", post)
     if (post.username !== user.username) {
       return new Response(
         400,
@@ -134,7 +137,9 @@ export const editPostHandler = function (schema, request) {
         }
       );
     }
-    post = { ...post, ...postData };
+    post = { ...post, content:postData };
+
+    // console.log("from controlers:",post)
     this.db.posts.update({ _id: postId }, post);
     return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {
