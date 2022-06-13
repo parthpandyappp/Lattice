@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { createPost } from "../features";
+import mockuser from "../assets/mockuser.png";
 import { useNavigate } from "react-router-dom";
-import { createPost } from "../features/postsSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const NewPost = () => {
-  const [char, setChar] = useState(250);
-  const [postContent, setPostContent] = useState("");
-  const { authToken, authUserLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [char, setChar] = useState(250);
   const [textColor, setColor] = useState("");
-  const dispatch = useDispatch();
+  const [postContent, setPostContent] = useState("");
+
+  const { authUser, authToken, authUserLoading } = useSelector(
+    (state) => state.auth
+  );
 
   const handleCharLength = (e) => {
     setPostContent(e.target.value);
@@ -32,8 +36,14 @@ const NewPost = () => {
   return (
     <div className="grid grid-cols-8 w-full shadow p-3 rounded mb-12">
       <img
-        className="col-span-1 p-1 rounded-full"
-        src="https://picsum.photos/50"
+        className="col-span-1 p-1 w-8 h-8 md:w-16 md:h-16 object-cover rounded-full "
+        src={
+          authUser
+            ? authUser?.avatar
+              ? authUser.avatar
+              : mockuser
+            : "https://picsum.photos/50"
+        }
         alt="user"
       />
       <div className="col-start-2 col-span-8 p-3">

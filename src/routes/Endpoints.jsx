@@ -1,6 +1,7 @@
+import { NotFound } from "../pages/NotFound";
 import { Routes, Route } from "react-router-dom";
 import { Home, Explore, BookMarks, Profile, Signup, Login } from "../pages";
-import { NotFound } from "../pages/NotFound";
+
 const Endpoints = () => {
   return (
     <Routes>

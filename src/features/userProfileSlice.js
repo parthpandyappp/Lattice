@@ -23,6 +23,36 @@ export const getUserProfile = createAsyncThunk("userProfile/getUserProfile", asy
     }
 })
 
+export const postFollowUser = createAsyncThunk("userProfile/postFollowUser", async ({ authToken, fuid }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/users/follow/${fuid}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+export const postUnFollowUser = createAsyncThunk("userProfile/postFollowUser", async ({ authToken, fuid }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/users/unfollow/${fuid}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 
 const userProfileSlice = createSlice({
     name: "userProfile",
@@ -32,6 +62,8 @@ const userProfileSlice = createSlice({
             state.userProfile.username = action.payload.username;
             state.userProfile.firstName = action.payload.firstName;
             state.userProfile.bio = action.payload.bio;
+            state.userProfile.avatar = action.payload.avatar;
+            state.userProfile.plink = action.payload.plink;
         }
     },
     extraReducers: {
@@ -42,11 +74,27 @@ const userProfileSlice = createSlice({
             state.userProfileLoading = true;
             state.userProfile = action.payload.user
         },
+        [postFollowUser.pending]: (state) => {
+            state.userProfileLoading = false;
+        },
+        [postFollowUser.fulfilled]: (state, action) => {
+            state.userProfile = action.payload.user;
+            state.userProfileLoading = true;
+        },
+        [postUnFollowUser.pending]: (state) => {
+            state.userProfileLoading = false;
+        },
+        [postUnFollowUser.fulfilled]: (state, action) => {
+            state.userProfile = action.payload.user;
+            state.userProfileLoading = true;
+        }
     }
 
 })
 
+
+
 export const { profileUpdate } = userProfileSlice.actions;
 
-
-export default userProfileSlice.reducer;
+const userProfileReducer = userProfileSlice.reducer
+export { userProfileReducer };

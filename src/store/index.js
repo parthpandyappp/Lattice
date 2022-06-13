@@ -1,10 +1,5 @@
-import authReducer from "../features/authSlice";
 import { configureStore } from "@reduxjs/toolkit";
-import modalFormReducer from "../features/modalSlice";
-import userProfileReducer from "../features/userProfileSlice";
-import usersReducer from "../features/usersSlice";
-import postsReducer from "../features/postsSlice";
-import bookMarksReducer from "../features/bookMarksSlice";
+import { authReducer, modalFormReducer, userProfileReducer, usersReducer, postsReducer, bookMarksReducer } from "../features"
 
 
 
@@ -15,7 +10,7 @@ const store = configureStore({
         userProfile: userProfileReducer,
         users: usersReducer,
         posts: postsReducer,
-        bookMarks: bookMarksReducer
+        bookmarks: bookMarksReducer
     }
 })
 

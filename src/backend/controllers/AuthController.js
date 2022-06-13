@@ -68,8 +68,10 @@ export const signupHandler = function (schema, request) {
 
 export const loginHandler = function (schema, request) {
   const { username, password } = JSON.parse(request.requestBody);
+  console.log(username, password)
   try {
     const foundUser = schema.users.findBy({ username: username });
+    console.log("Found: ", foundUser)
     if (!foundUser) {
       return new Response(
         404,
@@ -86,6 +88,7 @@ export const loginHandler = function (schema, request) {
         { _id: foundUser._id, username },
         process.env.REACT_APP_JWT_SECRET
       );
+      console.log("Cred: ", encodedToken, foundUser)
       return new Response(200, {}, { foundUser, encodedToken });
     }
     return new Response(

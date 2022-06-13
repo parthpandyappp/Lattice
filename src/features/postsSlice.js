@@ -8,6 +8,21 @@ const initialState = {
     postLoading: false,
 }
 
+export const getPost = createAsyncThunk("posts/getPost", async ({ authToken, postId }) => {
+    try {
+        const res = await axios({
+            method: "GET",
+            url: `/api/posts/${postId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 export const getPosts = createAsyncThunk("posts/getPosts", async () => {
     try {
         const res = await axios({
@@ -93,6 +108,7 @@ export const dislikePost = createAsyncThunk("posts/dislikePost", async ({ authTo
             url: `/api/posts/dislike/${postId}`,
             headers: {
                 authorization: authToken, // passing token as an authorization header
+                "Content-Type": "application/json"
             },
         })
         return res.data;
@@ -146,8 +162,15 @@ const postsSlice = createSlice({
             state.posts = action.payload.posts;
             state.postsLoading = true;
         },
+        [getPost.pending]: (state) => {
+            state.postLoading = false;
+        },
+        [getPost.fulfilled]: (state, action) => {
+            state.post = action.payload.post;
+            state.postLoading = true;
+        },
 
     }
 })
-
-export default postsSlice.reducer;
+const postsReducer = postsSlice.reducer
+export { postsReducer };

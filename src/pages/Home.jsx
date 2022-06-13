@@ -6,9 +6,9 @@ import { getAllUsers } from "../features/usersSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
   const { authToken, authUserLoading } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
   const reSignUp = async () => {
     try {

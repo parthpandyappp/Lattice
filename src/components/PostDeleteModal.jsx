@@ -1,13 +1,11 @@
 import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleModal } from "../features/modalSlice";
-import { deletePost } from "../features/postsSlice";
+import { deletePost, toggleModal } from "../features";
 
 const PostDeleteModal = () => {
   const dispatch = useDispatch();
-  const { authToken } = useSelector((state) => state.auth);
   const { postId } = useSelector((state) => state.modal);
-
+  const { authToken } = useSelector((state) => state.auth);
   const handleDelete = () => {
     dispatch(deletePost({ authToken, postId }));
     dispatch(toggleModal({ type: "DeletePost" }));

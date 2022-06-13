@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { userLogin } from "../features";
 import { useDispatch } from "react-redux";
-import { userLogin } from "../features/authSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
