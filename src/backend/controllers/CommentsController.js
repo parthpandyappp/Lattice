@@ -51,7 +51,7 @@ export const addPostCommentHandler = function (schema, request) {
 
     const comment = {
       _id: uuid(),
-      ...commentData,
+      text: commentData,
       username: user.username,
       votes: { upvotedBy: [], downvotedBy: [] },
       createdAt: formatDate(),
@@ -106,7 +106,7 @@ export const editPostCommentHandler = function (schema, request) {
     }
     post.comments[commentIndex] = {
       ...post.comments[commentIndex],
-      ...commentData,
+      text: commentData,
       updatedAt: formatDate(),
     };
     this.db.posts.update({ _id: postId }, post);
@@ -178,7 +178,7 @@ export const deletePostCommentHandler = function (schema, request) {
  * */
 
 export const upvotePostCommentHandler = function (schema, request) {
-  const user = requiresAuth.call(this, request);
+  const user = JSON.parse(localStorage.getItem("lattice-user"))
   try {
     if (!user) {
       return new Response(
@@ -199,7 +199,7 @@ export const upvotePostCommentHandler = function (schema, request) {
 
     if (
       post.comments[commentIndex].votes.upvotedBy.some(
-        (currUser) => currUser._id === user._id
+        (uid) => uid === user._id
       )
     ) {
       return new Response(
@@ -210,8 +210,8 @@ export const upvotePostCommentHandler = function (schema, request) {
     }
     post.comments[commentIndex].votes.downvotedBy = post.comments[
       commentIndex
-    ].votes.downvotedBy.filter((currUser) => currUser._id !== user._id);
-    post.comments[commentIndex].votes.upvotedBy.push(user);
+    ].votes.downvotedBy.filter((uid) => uid !== user._id);
+    post.comments[commentIndex].votes.upvotedBy.push(user._id);
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
     return new Response(201, {}, { comments: post.comments });
   } catch (error) {
@@ -231,7 +231,7 @@ export const upvotePostCommentHandler = function (schema, request) {
  * */
 
 export const downvotePostCommentHandler = function (schema, request) {
-  const user = requiresAuth.call(this, request);
+  const user = JSON.parse(localStorage.getItem("lattice-user"))
   try {
     if (!user) {
       return new Response(
@@ -252,7 +252,7 @@ export const downvotePostCommentHandler = function (schema, request) {
 
     if (
       post.comments[commentIndex].votes.downvotedBy.some(
-        (currUser) => currUser._id === user._id
+        (uid) => uid === user._id
       )
     ) {
       return new Response(
@@ -263,8 +263,8 @@ export const downvotePostCommentHandler = function (schema, request) {
     }
     post.comments[commentIndex].votes.upvotedBy = post.comments[
       commentIndex
-    ].votes.upvotedBy.filter((currUser) => currUser._id !== user._id);
-    post.comments[commentIndex].votes.downvotedBy.push(user);
+    ].votes.upvotedBy.filter((uid) => uid !== user._id);
+    post.comments[commentIndex].votes.downvotedBy.push(user._id);
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
     return new Response(201, {}, { comments: post.comments });
   } catch (error) {

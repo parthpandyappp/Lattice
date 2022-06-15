@@ -6,7 +6,77 @@ const initialState = {
     post: {},
     postsLoading: false,
     postLoading: false,
+    postRefreshToggle: false,
 }
+
+
+export const postComment = createAsyncThunk("posts/postComment", async ({ authToken, postId, comment }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/comments/add/${postId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+            data: JSON.stringify({
+                commentData: comment,
+            })
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+export const getComments = createAsyncThunk("posts/getComments", async ({ authToken, postId }) => {
+    try {
+        const res = await axios({
+            method: "GET",
+            url: `/api/comments/${postId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+export const editComment = createAsyncThunk("posts/editComment", async ({ authToken, postId, commentId, comment }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/comments/edit/${postId}/${commentId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+            data: {
+                commentData: comment,
+            }
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+export const deleteComment = createAsyncThunk("posts/deleteComment", async ({ authToken, postId, commentId}) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: `/api/comments/delete/${postId}/${commentId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+            },
+
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
 
 export const getPost = createAsyncThunk("posts/getPost", async ({ authToken, postId }) => {
     try {
@@ -117,11 +187,46 @@ export const dislikePost = createAsyncThunk("posts/dislikePost", async ({ authTo
     }
 })
 
+export const upVotePostComment = createAsyncThunk("posts/upVotePostComment", async ({ authToken, postId, commentId }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: ` /api/comments/upvote/${postId}/${commentId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+                "Content-Type": "application/json"
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+export const downVotePostComment = createAsyncThunk("posts/downVotePostComment", async ({ authToken, postId, commentId }) => {
+    try {
+        const res = await axios({
+            method: "POST",
+            url: ` /api/comments/downvote/${postId}/${commentId}`,
+            headers: {
+                authorization: authToken, // passing token as an authorization header
+                "Content-Type": "application/json"
+            },
+        })
+        return res.data;
+    } catch (error) {
+        console.error(error)
+    }
+})
 
 const postsSlice = createSlice({
     name: "posts",
     initialState,
-    reducers: {},
+    reducers: {
+        postRefresh: (state) => {
+            state.postRefreshToggle = !state.postRefreshToggle;
+        }
+    },
     extraReducers: {
         [getPosts.pending]: (state) => {
             state.postsLoading = false;
@@ -169,8 +274,59 @@ const postsSlice = createSlice({
             state.post = action.payload.post;
             state.postLoading = true;
         },
+        [upVotePostComment.pending]: (state) => {
+            state.postLoading = false;
+        },
+        [downVotePostComment.pending]: (state) => {
+            state.postLoading = false;
+        },
+        [upVotePostComment.fulfilled]: (state, action) => {
+            state.post.comments = action.payload.comments;
+            state.postLoading = true;
+        },
+        [downVotePostComment.fulfilled]: (state, action) => {
+            state.post.comments = action.payload.comments;
+            state.postLoading = true;
+        },
+        [postComment.pending]: (state) => {
+            state.postLoading = false;
+            state.postsLoading = false;
+        },
+        [postComment.fulfilled]: (state, action) => {
+            state.post.comments = action.payload.comments;
+            state.postLoading = true;
+            state.postsLoading = true;
+        },
+        [getComments.pending]: (state) => {
+            state.postsLoading = false;
+            state.postLoading = false;
+        },
+        [getComments.fulfilled]: (state, action) => {
+            state.post.comments = action.payload.comments
+            state.postsLoading = true;
+            state.postLoading = true;
+        },
+        [editComment.pending]: (state) => {
+            state.postsLoading = false;
+            state.postLoading = false;
+        },
+        [editComment.fulfilled]: (state, action) => {
+            state.post.comments = action.payload.comments
+            state.postsLoading = true;
+            state.postLoading = true;
+        },
+        [deleteComment.pending]: (state) => {
+            state.postsLoading = false;
+            state.postLoading = false;
+        },
+        [deleteComment.fulfilled]: (state, action) => {
+            state.post.comments = action.payload.comments
+            state.postsLoading = true;
+            state.postLoading = true;
+        },
 
     }
 })
+export const { postRefresh } = postsSlice.actions;
 const postsReducer = postsSlice.reducer
 export { postsReducer };

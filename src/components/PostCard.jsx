@@ -93,92 +93,98 @@ const PostCard = ({ data, from }) => {
           </div>
 
           <p className="text-xs md:text-sm">{user[0].bio}</p>
+
           <p className="mt-2 text-sm w-44 break-normal text-center md:text-left md:w-full md:text-base">
             {data.content}
           </p>
-          <div className="flex items-center gap-3 mt-3">
-            {from !== "bookmarks" && (
-              <>
-                {!isLiked && !isDisliked && (
-                  <div className="flex gap-1 items-center">
-                    <p className="text-normal text-gray">
-                      {data.likes.likeCount}
-                    </p>
-                    <IoIosArrowUp
-                      className="cursor-pointer text-3xl text-gray-500"
-                      onClick={
-                        authUser
-                          ? () =>
-                              dispatch(
-                                likePost({ authToken, postId: data._id })
-                              )
-                          : () => navigate("/login")
-                      }
-                    />
-                    <p className="text-normal text-gray">
-                      {data.likes.dislikedBy.length}
-                    </p>
-                    <IoIosArrowDown
-                      className="cursor-pointer text-3xl text-gray-500"
-                      onClick={
-                        authUser
-                          ? () =>
-                              dispatch(
-                                dislikePost({ authToken, postId: data._id })
-                              )
-                          : () => navigate("/login")
-                      }
-                    />
-                  </div>
-                )}
-                {isLiked && !isDisliked && (
-                  <div className="flex gap-1  items-center">
-                    <p className="text-normal text-green-300 ">
-                      {data.likes.likeCount}
-                    </p>
-                    <IoIosArrowUp className="cursor-pointer text-3xl text-green-500" />
-                    <p className="text-normal text-gray">
-                      {data.likes.dislikedBy.length}
-                    </p>
-                    <IoIosArrowDown
-                      className="cursor-pointer text-3xl text-gray-500"
-                      onClick={
-                        authUser
-                          ? () =>
-                              dispatch(
-                                dislikePost({ authToken, postId: data._id })
-                              )
-                          : () => navigate("/login")
-                      }
-                    />
-                  </div>
-                )}
-                {isDisliked && !isLiked && (
-                  <div className="flex gap-1  items-center">
-                    <p className="text-normal text-gray">
-                      {data.likes.likeCount}
-                    </p>
-                    <IoIosArrowUp
-                      className="cursor-pointer text-3xl text-gray-500"
-                      onClick={
-                        authUser
-                          ? () =>
-                              dispatch(
-                                likePost({ authToken, postId: data._id })
-                              )
-                          : () => navigate("/login")
-                      }
-                    />
-                    <p className="text-lg text-red-400">
-                      {data.likes.dislikedBy.length}
-                    </p>
-                    <IoIosArrowDown className="cursor-pointer text-3xl text-red-500" />
-                  </div>
-                )}
-              </>
-            )}
 
-            <BiComment className="cursor-pointer text-2xl" />
+          <div className="flex justify-between items-center gap-3 mt-3">
+            <div className="flex items-center gap-3">
+              {from !== "bookmarks" && (
+                <>
+                  {!isLiked && !isDisliked && (
+                    <div className="flex gap-1 items-center">
+                      <p className="text-normal text-gray">
+                        {data.likes.likeCount}
+                      </p>
+                      <IoIosArrowUp
+                        className="cursor-pointer text-3xl text-gray-500"
+                        onClick={
+                          authUser
+                            ? () =>
+                                dispatch(
+                                  likePost({ authToken, postId: data._id })
+                                )
+                            : () => navigate("/login")
+                        }
+                      />
+                      <p className="text-normal text-gray">
+                        {data.likes.dislikedBy.length}
+                      </p>
+                      <IoIosArrowDown
+                        className="cursor-pointer text-3xl text-gray-500"
+                        onClick={
+                          authUser
+                            ? () =>
+                                dispatch(
+                                  dislikePost({ authToken, postId: data._id })
+                                )
+                            : () => navigate("/login")
+                        }
+                      />
+                    </div>
+                  )}
+                  {isLiked && !isDisliked && (
+                    <div className="flex gap-1  items-center">
+                      <p className="text-normal text-green-300 ">
+                        {data.likes.likeCount}
+                      </p>
+                      <IoIosArrowUp className="cursor-pointer text-3xl text-green-500" />
+                      <p className="text-normal text-gray">
+                        {data.likes.dislikedBy.length}
+                      </p>
+                      <IoIosArrowDown
+                        className="cursor-pointer text-3xl text-gray-500"
+                        onClick={
+                          authUser
+                            ? () =>
+                                dispatch(
+                                  dislikePost({ authToken, postId: data._id })
+                                )
+                            : () => navigate("/login")
+                        }
+                      />
+                    </div>
+                  )}
+                  {isDisliked && !isLiked && (
+                    <div className="flex gap-1  items-center">
+                      <p className="text-normal text-gray">
+                        {data.likes.likeCount}
+                      </p>
+                      <IoIosArrowUp
+                        className="cursor-pointer text-3xl text-gray-500"
+                        onClick={
+                          authUser
+                            ? () =>
+                                dispatch(
+                                  likePost({ authToken, postId: data._id })
+                                )
+                            : () => navigate("/login")
+                        }
+                      />
+                      <p className="text-lg text-red-400">
+                        {data.likes.dislikedBy.length}
+                      </p>
+                      <IoIosArrowDown className="cursor-pointer text-3xl text-red-500" />
+                    </div>
+                  )}
+                </>
+              )}
+              <Link to={authUser ? `/post/${data._id}` : `/login`}>
+                <BiComment className="cursor-pointer text-xl" />
+              </Link>
+            </div>
+
             {isBookMarked ? (
               <BsFillBookmarkFill
                 className="text-xl cursor-pointer"
