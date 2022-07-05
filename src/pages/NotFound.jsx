@@ -1,5 +1,6 @@
-import backpack from "../assets/backpack.png";
 import { Link } from "react-router-dom";
+import backpack from "../assets/backpack.png";
+
 const NotFound = () => {
   return (
     <main className="flex flex-col items-center justify-center h-screen">

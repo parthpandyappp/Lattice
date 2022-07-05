@@ -1,47 +1,50 @@
 import { MdClose } from "react-icons/md";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editPost, toggleModal, getPost } from "../features";
+import { editComment, toggleModal, postRefresh } from "../features";
 
-const PostUpdateModal = () => {
+const CommentUpdateModal = () => {
   const dispatch = useDispatch();
-  const { postId } = useSelector((state) => state.modal);
+  const { commentId, postId } = useSelector((state) => state.modal);
   const { authToken } = useSelector((state) => state.auth);
-  const { post, postLoading } = useSelector((state) => state.posts);
-  const [postContent, setPostContent] = useState(post.content);
+  const { posts, postsLoading } = useSelector((state) => state.posts);
+  const post = posts.filter((post) => post._id === postId)[0];
+  const comment = post.comments.filter(
+    (comment) => comment._id === commentId
+  )[0];
+  const [commentContent, setCommentContent] = useState(comment?.text);
 
   const handleUpdate = () => {
-    dispatch(editPost({ authToken, postId, post: postContent }));
-    dispatch(toggleModal({ type: "PostUpdate" }));
+    dispatch(
+      editComment({ authToken, postId, commentId, comment: commentContent })
+    );
+    dispatch(toggleModal({ type: "commentUpdate", commentId }));
+    dispatch(postRefresh());
   };
 
-  useEffect(() => {
-    setPostContent(post.content);
-    dispatch(getPost({ authToken, postId }));
-    // eslint-disable-next-line
-  }, [post.content]);
-
   return (
-    postLoading && (
+    postsLoading && (
       <div className="border-2 border-slate-600 w-5/8 p-3 rounded-md bg-amber-100">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">Post Details</h1>
+          <h1 className="text-xl font-bold">Comment Details</h1>
           <MdClose
             className="text-lg cursor-pointer"
-            onClick={() => dispatch(toggleModal({ type: "PostUpdate" }))}
+            onClick={() =>
+              dispatch(toggleModal({ type: "commentUpdate", commentId }))
+            }
           />
         </div>
 
         <div className="flex flex-col mt-8">
           <label htmlFor="email" className="font-medium">
-            Your post
+            Your Comment
           </label>
           <textarea
             name="post"
             type="text"
-            value={postContent}
+            value={commentContent}
             className="border-2 border-slate-600 rounded-md py-1 w-full px-2 bg-amber-50"
-            onChange={(e) => setPostContent(e.target.value)}
+            onChange={(e) => setCommentContent(e.target.value)}
           />
         </div>
 
@@ -58,4 +61,4 @@ const PostUpdateModal = () => {
   );
 };
 
-export { PostUpdateModal };
+export { CommentUpdateModal };

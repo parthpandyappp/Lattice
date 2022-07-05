@@ -1,14 +1,15 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "../features/usersSlice";
 import { Link } from "react-router-dom";
+import { getAllUsers } from "../features";
+import mockuser from "../assets/mockuser.png";
+import { useDispatch, useSelector } from "react-redux";
 
 const WhoToFollow = () => {
+  const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
   const { authUser, authToken, authUserLoading } = useSelector(
     (state) => state.auth
   );
-  const dispatch = useDispatch();
 
   const people =
     authUserLoading &&
@@ -35,7 +36,7 @@ const WhoToFollow = () => {
                 <Link key={user._id} to={`/profile/${user.username}`}>
                   <p className="flex gap-1 text-sm items-center font-medium">
                     <img
-                      src={user.avatar}
+                      src={user?.avatar ? user.avatar : mockuser}
                       className="rounded-full w-12"
                       alt="user-profile"
                     />

@@ -4,6 +4,7 @@ const initialState = {
     modalVisible: false,
     modalChildren: null,
     postId: null,
+    commentId: null,
 }
 
 const modalSlice = createSlice({
@@ -12,11 +13,13 @@ const modalSlice = createSlice({
     reducers: {
         toggleModal: (state, action) => {
             state.modalVisible = !state.modalVisible
-            state.modalChildren = action.payload.type
-            state.postId = action.payload.postId
+            state.modalChildren = action.payload.type;
+            state.postId = action.payload.postId;
+            state.commentId = action.payload?.commentId;
         }
     }
 })
 
 export const { toggleModal } = modalSlice.actions;
-export default modalSlice.reducer;
+const modalFormReducer = modalSlice.reducer
+export { modalFormReducer };

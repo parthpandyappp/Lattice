@@ -1,5 +1,5 @@
-import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     bookMarks: [],
@@ -43,6 +43,7 @@ export const getBookMarks = createAsyncThunk("posts/getBookMarks", async ({ auth
             url: `/api/users/bookmark`,
             headers: {
                 authorization: authToken, // passing token as an authorization header
+                "Content-Type": "application/json"
             },
         })
         return res.data;
@@ -56,28 +57,28 @@ const bookMarksSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [getBookMarks.pending]:(state)=>{
+        [getBookMarks.pending]: (state) => {
             state.bookMarksLoading = false;
         },
-        [addToBookmarks.pending]:(state)=>{
+        [addToBookmarks.pending]: (state) => {
             state.bookMarksLoading = false;
         },
-        [removeFromBookmarks.pending]:(state)=>{
+        [removeFromBookmarks.pending]: (state) => {
             state.bookMarksLoading = false;
         },
-        [getBookMarks.fulfilled]:(state, action)=>{
+        [getBookMarks.fulfilled]: (state, action) => {
             state.bookMarks = action.payload.bookmarks;
             state.bookMarksLoading = true;
         },
-        [addToBookmarks.fulfilled]:(state, action)=>{
+        [addToBookmarks.fulfilled]: (state, action) => {
             state.bookMarks = action.payload.bookmarks;
             state.bookMarksLoading = true;
         },
-        [removeFromBookmarks.fulfilled]:(state, action)=>{
+        [removeFromBookmarks.fulfilled]: (state, action) => {
             state.bookMarks = action.payload.bookmarks;
             state.bookMarksLoading = true;
         },
     }
 })
-
-export default bookMarksSlice.reducer;
+const bookMarksReducer = bookMarksSlice.reducer;
+export { bookMarksReducer };

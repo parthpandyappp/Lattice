@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
-import { ProfileUpdateModal } from "./ProfileUpdateModal";
 import { PostUpdateModal } from "./PostUpdateModal";
 import { PostDeleteModal } from "./PostDeleteModal";
+import { CommentUpdateModal } from "./CommentUpdateModal";
+import { CommentDeleteModal } from "./CommentDeleteModal";
+import { ProfileUpdateModal } from "./ProfileUpdateModal";
 
 const PrimeModal = ({ postData }) => {
   const { modalChildren } = useSelector((state) => state.modal);
@@ -14,6 +16,8 @@ const PrimeModal = ({ postData }) => {
         <PostUpdateModal postData={postData} />
       ) : null}
       {modalChildren === "DeletePost" ? <PostDeleteModal /> : null}
+      {modalChildren === "commentUpdate" ? <CommentUpdateModal /> : null}
+      {modalChildren === "commentDelete" ? <CommentDeleteModal /> : null}
     </div>
   );
 };

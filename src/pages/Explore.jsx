@@ -1,14 +1,13 @@
 import { useEffect } from "react";
+import { BiLoader } from "react-icons/bi";
+import { getAllUsers, getPosts } from "../features";
 import { useDispatch, useSelector } from "react-redux";
 import { NewPost, PostCard, WhoToFollow } from "../components";
-import { getAllUsers } from "../features/usersSlice";
-import { getPosts } from "../features/postsSlice";
-import { BiLoader } from "react-icons/bi";
 
 const Explore = () => {
   const dispatch = useDispatch();
+  let { posts, postsLoading } = useSelector((state) => state.posts);
   const { authToken, authUserLoading } = useSelector((state) => state.auth);
-  const { posts, postsLoading } = useSelector((state) => state.posts);
 
   useEffect(() => {
     authToken !== null && dispatch(getAllUsers({ authToken }));
@@ -22,9 +21,12 @@ const Explore = () => {
         <NewPost />
         {postsLoading ? (
           <>
-            {posts.map((post) => (
-              <PostCard key={post._id} data={post} />
-            ))}
+            {posts
+              .slice()
+              .reverse()
+              .map((post) => (
+                <PostCard key={post._id} data={post} />
+              ))}
           </>
         ) : (
           <div className="flex items-center justify-center min-h-screen">

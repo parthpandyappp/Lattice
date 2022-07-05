@@ -21,9 +21,10 @@ export const userLogin = createAsyncThunk('authentication/userLogin', async ({ u
         localStorage.setItem("lattice-token", res.data.encodedToken);
         localStorage.setItem("lattice-user", JSON.stringify(res.data.foundUser));
         localStorage.setItem("authUserLoading", true)
-
+        console.log()
         return res.data
     } catch (error) {
+        console.log(error)
         return thunkAPI.rejectWithValue("username or password is incorrect")
     }
 })
@@ -38,6 +39,7 @@ export const userSignup = createAsyncThunk('authentication/userSignup', async ({
                 firstName: firstName,
                 avatar: "",
                 bio: "",
+                plink: "",
             }
         })
         localStorage.setItem("lattice-token", res.data.encodedToken);
@@ -67,6 +69,8 @@ const authSlice = createSlice({
             state.authUser.username = action.payload.username;
             state.authUser.firstName = action.payload.firstName;
             state.authUser.bio = action.payload.bio;
+            state.authUser.avatar = action.payload.avatar;
+            state.authUser.plink = action.payload.plink;
             const user = JSON.parse(localStorage.getItem("lattice-user"))
             localStorage.setItem("lattice-user", JSON.stringify({ ...user, username: action.payload.username, firstName: action.payload.firstName, bio: action.payload.bio }))
         },
@@ -94,4 +98,5 @@ const authSlice = createSlice({
     }
 })
 export const { userLogout, editProfile } = authSlice.actions;
-export default authSlice.reducer
+const authReducer = authSlice.reducer
+export { authReducer }
